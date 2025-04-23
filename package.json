@@ -1,0 +1,22 @@
+{
+  "name": "http-api",
+  "version": "1.0.0",
+  "main": "./dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/main.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.1",
+    "typescript": "^5.8.3"
+  }
+}

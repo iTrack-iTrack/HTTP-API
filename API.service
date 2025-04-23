@@ -1,0 +1,10 @@
+[Unit]
+Description=A backend API for the data.
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/npm --prefix /TODO/HTTP-API start
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
