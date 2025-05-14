@@ -3,7 +3,7 @@ Description=A backend API for the data.
 After=multi-user.target
 
 [Service]
-ExecStart=/usr/bin/npm --prefix /TODO/HTTP-API start
+ExecStart=/usr/bin/npm --prefix /srv/HTTP-API start
 Type=simple
 
 [Install]

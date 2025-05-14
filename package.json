@@ -1,7 +1,7 @@
 {
   "name": "http-api",
   "version": "1.0.0",
-  "main": "./dist/main.js",
+  "main": "./src/main.ts",
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/main.js"
