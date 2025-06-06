@@ -46,6 +46,24 @@ let server = async () => {
 		res.send(result);
 	});
 
+	app.get("/:user_id/live", (req: Request, res: Response) => {
+		res.writeHead(200, {
+			"Content-Type" : "text/event-stream",
+			"Cache-Control": "no-cache",
+			"Connection"   : "keep-alive"
+		});
+
+		let interval = setInterval(async () => {
+			let data = String(Math.floor(Math.random() * (10 + 1)));
+			res.write(`data: ${data}\n\n`);
+		}, 1000);
+
+		res.on("close", () => {
+			clearInterval(interval);
+			res.end();
+		});
+	});
+
 	let port: Number = Number(process.env.PORT) || 8082;
 	let http = createServer(app);
 	http.listen(port, () => {
