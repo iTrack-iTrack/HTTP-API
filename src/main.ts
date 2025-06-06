@@ -22,7 +22,7 @@ let server = async () => {
 			      [req.params.id])
 	});
 
-	let port: Number = Number(process.env.PORT) || 8080;
+	let port: Number = Number(process.env.PORT) || 8082;
 	let http = createServer(app);
 	http.listen(port, () => {
 		    console.log(`[server]: listening on port http://localhost:${port}.`)
