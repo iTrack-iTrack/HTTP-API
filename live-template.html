@@ -5,7 +5,7 @@
 		<div id="updates"></div>
 	</body>
 	<script type="text/javascript">
-		let source = new EventSource("http://143.179.176.89:8082/user_id/live/sensor");
+		let source = new EventSource("http://itrackandi.watch:8082/1/live/bpm");
 
 		source.addEventListener("message", (e) => {
 			document.getElementById("updates").innerHTML =
