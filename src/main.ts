@@ -19,7 +19,7 @@ let server = async () => {
 
 	app.get("/", async (req: Request, res: Response) => {
 		let result = await queryDatabase(
-			"SELECT u.*"
+			"SELECT u.* " +
 			"FROM users u"
 		);
 		res.send(result);
@@ -27,19 +27,19 @@ let server = async () => {
 
 	app.get("/:user_id", async (req: Request, res: Response) => {
 		let result = await queryDatabase(
-			"SELECT s.*"
-			"FROM users u, sensor_data s"
-			"WHERE u.user_id = ?"
+			"SELECT s.* "+
+			"FROM users u, sensor_data s "+
+			"WHERE u.user_id = ? "+
 			"AND u.user_id = s.user_id",
 			[req.params.user_id]
 		);
 		res.send(result);
 	});
 
-	app.get("/:user_id/info", (req: Request, res: Response) => {
+	app.get("/:user_id/info", async (req: Request, res: Response) => {
 		let result = await queryDatabase(
-			"SELECT u.*"
-			"FROM users u"
+			"SELECT u.* "+
+			"FROM users u "+
 			"WHERE u.user_id = ?",
 			[req.params.user_id]
 		);
