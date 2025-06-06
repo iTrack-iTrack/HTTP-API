@@ -19,7 +19,7 @@ let server = async () => {
 
 	app.get("/", async (req: Request, res: Response) => {
 		let result = await queryDatabase(
-			"SELECT u.* " +
+			"SELECT u.user_id, u.full_name " +
 			"FROM users u"
 		);
 		res.send(result);
