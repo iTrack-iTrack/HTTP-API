@@ -46,7 +46,7 @@ let server = async () => {
 		res.send(result);
 	});
 
-	app.get("/:user_id/live", (req: Request, res: Response) => {
+	app.get("/:user_id/live/:category", (req: Request, res: Response) => {
 		res.writeHead(200, {
 			"Content-Type" : "text/event-stream",
 			"Cache-Control": "no-cache",
