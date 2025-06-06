@@ -5,7 +5,7 @@ import { createServer } from "http";
 import { open } from "sqlite";
 import sqlite3 from "sqlite3";
 
-dotenv.config();
+dotenv.config({ path: "./.env" });
 
 let server = async () => {
 	let app: Express = express();
