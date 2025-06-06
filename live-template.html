@@ -5,7 +5,7 @@
 		<div id="updates"></div>
 	</body>
 	<script type="text/javascript">
-		let source = new EventSource("http://localhost:8080/live");
+		let source = new EventSource("http://143.179.176.89:8082/user_id/live/sensor");
 
 		source.addEventListener("message", (e) => {
 			document.getElementById("updates").innerHTML =
