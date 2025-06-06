@@ -9,7 +9,9 @@ dotenv.config();
 
 let server = async () => {
 	let app: Express = express();
+
 	app.use(cors({ origin: true, credentials: true }));
+	app.use("/picture", express.static(String(process.env.PFP_PATH)));
 
 	let db = await open({filename: String(process.env.DB_PATH), driver: sqlite3.Database});
 	let queryDatabase = async (res: Response, query: string, params: any[] = []) => {
