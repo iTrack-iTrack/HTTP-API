@@ -17,12 +17,30 @@ let server = async () => {
 
 	let queryDatabase = async (query: string, params: any[] = []) => await db.all(query, params);
 
+	app.get("/", async (req: Request, res: Response) => {
+		let result = await queryDatabase(
+			"SELECT u.*"
+			"FROM users u"
+		);
+		res.send(result);
+	});
+
 	app.get("/:user_id", async (req: Request, res: Response) => {
 		let result = await queryDatabase(
 			"SELECT s.*"
 			"FROM users u, sensor_data s"
 			"WHERE u.user_id = ?"
 			"AND u.user_id = s.user_id",
+			[req.params.user_id]
+		);
+		res.send(result);
+	});
+
+	app.get("/:user_id/info", (req: Request, res: Response) => {
+		let result = await queryDatabase(
+			"SELECT u.*"
+			"FROM users u"
+			"WHERE u.user_id = ?",
 			[req.params.user_id]
 		);
 		res.send(result);
