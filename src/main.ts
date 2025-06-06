@@ -5,7 +5,7 @@ import { createServer } from "http";
 import { open } from "sqlite";
 import sqlite3 from "sqlite3";
 
-dotenv.config();
+dotenv.config({ path: "./.env" });
 
 let server = async () => {
 	let app: Express = express();
@@ -19,7 +19,7 @@ let server = async () => {
 
 	app.get("/", async (req: Request, res: Response) => {
 		let result = await queryDatabase(
-			"SELECT u.* " +
+			"SELECT u.user_id, u.full_name " +
 			"FROM users u"
 		);
 		res.send(result);
