@@ -1,6 +1,8 @@
-import express, { Express, Request, Response } from "express";
+import bcrypt from "bcrypt";
+import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
+import express, { Express, Request, Response } from "express";
 import { createServer } from "http";
 import { open } from "sqlite";
 import sqlite3 from "sqlite3";
@@ -11,6 +13,8 @@ let server = async () => {
 	let app: Express = express();
 
 	app.use(cors({ origin: true, credentials: true }));
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use("/picture", express.static(String(process.env.PFP_PATH)));
 
 	let db = await open({filename: String(process.env.DB_PATH), driver: sqlite3.Database});
@@ -62,6 +66,32 @@ let server = async () => {
 			clearInterval(interval);
 			res.end();
 		});
+	});
+
+	let salt = "$2b$10$itrackandiwatchanditra";
+	let hashPassword = async (password: string): Promise<string> => await bcrypt.hash(password, salt);
+
+	app.post("/register", async (req: Request, res: Response) => {
+		try {
+			let password = await hashPassword(req.body.password);
+			await db.run(
+				"INSERT INTO users (password, first_name, last_name, "+
+					"date_of_birth, country, region, "+
+					"street, house_number, contact, "+
+					"sickness, picture) "+
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+				[password, req.body.first_name, req.body.last_name,
+					req.body.date_of_birth, req.body.country, req.body.region,
+					req.body.street, req.body.house_number, req.body.contact,
+					req.body.sickness, req.body.picture]
+			);
+			res.send("Success!");
+		} catch (error: unknown) {
+			if (error instanceof Error)
+				res.send(`Failed: ${error.message}.`);
+			else
+				res.send(`Failed: ${error}.`);
+		}
 	});
 
 	let port: Number = Number(process.env.PORT) || 8082;
