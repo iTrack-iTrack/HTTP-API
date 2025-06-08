@@ -7,6 +7,7 @@
     "start": "node ./dist/main.js"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
@@ -15,6 +16,7 @@
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
