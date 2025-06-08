@@ -67,6 +67,28 @@ let server = async () => {
 		});
 	});
 
+	app.post("/register", async (req: Request, res: Response) => {
+		try {
+			await db.run(
+				"INSERT INTO users (password, first_name, last_name, "+
+					"date_of_birth, country, region, "+
+					"street, house_number, contact, "+
+					"sickness, picture) "+
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+				[req.body.password, req.body.first_name, req.body.last_name,
+					req.body.date_of_birth, req.body.country, req.body.region,
+					req.body.street, req.body.house_number, req.body.contact,
+					req.body.sickness, req.body.picture]
+			);
+			res.send("Success!");
+		} catch (error: unknown) {
+			if (error instanceof Error)
+				res.send(`Failed: ${error.message}.`);
+			else
+				res.send(`Failed: ${error}.`);
+		}
+	});
+
 	let port: Number = Number(process.env.PORT) || 8082;
 	let http = createServer(app);
 	http.listen(port, () => {
