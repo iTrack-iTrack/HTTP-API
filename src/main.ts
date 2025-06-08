@@ -1,4 +1,5 @@
 import express, { Express, Request, Response } from "express";
+import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import { createServer } from "http";
@@ -11,6 +12,8 @@ let server = async () => {
 	let app: Express = express();
 
 	app.use(cors({ origin: true, credentials: true }));
+	app.use(bodyParser.json());
+	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use("/picture", express.static(String(process.env.PFP_PATH)));
 
 	let db = await open({filename: String(process.env.DB_PATH), driver: sqlite3.Database});
