@@ -113,6 +113,12 @@ let server = async () => {
 			return;
 		}
 
+		let one_hour = 60 * 60 * 1000;
+		if ((new Date().getTime() - Date.parse(payload.time)) > one_hour) {
+			res.send("Failed: Time has expired.");
+			return;
+		}
+
 		if (payload.user_id !== "admin" && payload.user_id !== req.params.user_id) {
 			res.send("Failed: User does not have access right.");
 			return;
