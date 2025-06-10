@@ -60,12 +60,7 @@ let server = async () => {
 		let interval = setInterval(async () => {
 			let random: {
 				date_time: string,
-				accelerometer_x: string,
-				accelerometer_y: string,
-				accelerometer_z: string,
-				gyroscope_x: string,
-				gyroscope_y: string,
-				gyroscope_z: string,
+				step: string,
 				temperature: string,
 				longitude: string,
 				latitude: string,
@@ -73,17 +68,12 @@ let server = async () => {
 				blood_oxygen: string
 			} = {
 				date_time: String(Math.floor(Math.random() * (10 + 1))),
-				accelerometer_x: String(Math.floor(Math.random() * (10 + 1))),
-				accelerometer_y: String(Math.floor(Math.random() * (10 + 1))),
-				accelerometer_z: String(Math.floor(Math.random() * (10 + 1))),
-				gyroscope_x: String(Math.floor(Math.random() * (10 + 1))),
-				gyroscope_y: String(Math.floor(Math.random() * (10 + 1))),
-				gyroscope_z: String(Math.floor(Math.random() * (10 + 1))),
 				temperature: String(Math.floor(Math.random() * (10 + 1))),
 				longitude: String(Math.floor(Math.random() * (10 + 1))),
 				latitude: String(Math.floor(Math.random() * (10 + 1))),
 				bpm: String(Math.floor(Math.random() * (10 + 1))),
 				blood_oxygen: String(Math.floor(Math.random() * (10 + 1)))
+				step: String(Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000),
 			};
 
 			res.write(`data: ${JSON.stringify(random)}\n\n`);
