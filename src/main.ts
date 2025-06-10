@@ -67,12 +67,12 @@ let server = async () => {
 				bpm: string,
 				blood_oxygen: string
 			} = {
-				date_time: String(Math.floor(Math.random() * (10 + 1))),
 				temperature: String(Math.floor(Math.random() * (10 + 1))),
 				longitude: String(Math.floor(Math.random() * (10 + 1))),
 				latitude: String(Math.floor(Math.random() * (10 + 1))),
 				bpm: String(Math.floor(Math.random() * (10 + 1))),
 				blood_oxygen: String(Math.floor(Math.random() * (10 + 1)))
+				date_time: String(new Date()),
 				step: String(Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000),
 			};
 
