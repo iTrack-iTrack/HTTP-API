@@ -35,6 +35,11 @@ let server = async () => {
 	let hashPassword = async (password: string): Promise<string> => await bcrypt.hash(password, salt);
 
 	app.post("/login", async (req: Request, res: Response) => {
+		if (!req.body.user_id || !req.body.password) {
+			res.send("Failed: Invalid Inputs.");
+			return;
+		}
+
 		if (req.body.user_id === "admin" && req.body.password === jwt_secret) {
 			let data: {time: Date, user_id: string} = {
 				time: new Date(),
@@ -72,6 +77,13 @@ let server = async () => {
 	});
 
 	app.post("/register", async (req: Request, res: Response) => {
+		if (!req.body.password || !req.body.first_name || !req.body.last_name
+		|| !req.body.date_of_birth || !req.body.country || !req.body.region
+		|| !req.body.street || !req.body.house_number || !req.body.contact
+		|| !req.body.sickness || !req.body.sickness) {
+			res.send("Failed: Invalid Inputs.");
+			return;
+		}
 		try {
 			let password = await hashPassword(req.body.password);
 			await db.run(
@@ -83,7 +95,7 @@ let server = async () => {
 				[password, req.body.first_name, req.body.last_name,
 					req.body.date_of_birth, req.body.country, req.body.region,
 					req.body.street, req.body.house_number, req.body.contact,
-					req.body.sickness, req.body.picture]
+					req.body.sickness, /*req.body.picture*/ "pfp.jpg"]
 			);
 			res.send("Success!");
 		} catch (error: unknown) {
@@ -95,6 +107,11 @@ let server = async () => {
 	});
 
 	let authentication = (req: Request, res: Response, next: Function) => {
+		if (!req.params.user_id) {
+			res.send("Failed: User ID doesn't exist.");
+			return;
+		}
+
 		let auth = req.headers.authorization;
 		if (!auth?.startsWith("Bearer")) {
 			res.send("Failed: Not Bearer Token.");
