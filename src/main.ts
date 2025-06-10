@@ -67,13 +67,13 @@ let server = async () => {
 				bpm: string,
 				blood_oxygen: string
 			} = {
-				temperature: String(Math.floor(Math.random() * (10 + 1))),
-				longitude: String(Math.floor(Math.random() * (10 + 1))),
-				latitude: String(Math.floor(Math.random() * (10 + 1))),
-				bpm: String(Math.floor(Math.random() * (10 + 1))),
-				blood_oxygen: String(Math.floor(Math.random() * (10 + 1)))
 				date_time: String(new Date()),
 				step: String(Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000),
+				temperature: String(Math.floor(Math.random() * (40 - 35 + 1)) + 35),
+				longitude: String(Math.floor(Math.random() * (56 - 53 + 1)) + 53),
+				latitude: String(Math.floor(Math.random() * (56 - 53 + 1)) + 53),
+				bpm: String(Math.floor(Math.random() * (100 - 50 + 1)) + 50),
+				blood_oxygen: String(Math.floor(Math.random() * (100 - 50 + 1)) + 50)
 			};
 
 			res.write(`data: ${JSON.stringify(random)}\n\n`);
