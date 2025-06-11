@@ -136,7 +136,7 @@ let server = async () => {
 			return;
 		}
 
-		if (payload.user_id !== "admin" && payload.user_id !== req.params.user_id) {
+		if (payload.user_id !== "admin" && payload.user_id !== String(req.params.user_id)) {
 			res.send("Failed: User does not have access right.");
 			return;
 		}
