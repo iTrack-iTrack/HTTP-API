@@ -19,12 +19,13 @@ let server = async () => {
 	app.use("/picture", express.static(String(process.env.PFP_PATH)));
 
 	let db = await open({filename: String(process.env.DB_PATH), driver: sqlite3.Database});
-	let queryDatabase = async (query: string, params: any[] = []) => await db.all(query, params);
+	let queryDatabaseSingle = async (query: string, params: any[] = []) => await db.get(query, params);
+	let queryDatabaseMany = async (query: string, params: any[] = []) => await db.all(query, params);
 
 	let jwt_secret = String(process.env.JWT_SECRET);
 
 	app.get("/", async (req: Request, res: Response) => {
-		let result = await queryDatabase(
+		let result = await queryDatabaseMany(
 			"SELECT u.user_id, u.first_name, u.last_name " +
 			"FROM users u"
 		);
@@ -145,7 +146,7 @@ let server = async () => {
 	};
 
 	app.get("/:user_id", authentication, async (req: Request, res: Response) => {
-		let result = await queryDatabase(
+		let result = await queryDatabaseMany(
 			"SELECT s.* "+
 			"FROM users u, sensor_data s "+
 			"WHERE u.user_id = ? "+
@@ -156,7 +157,7 @@ let server = async () => {
 	});
 
 	app.get("/:user_id/info", authentication, async (req: Request, res: Response) => {
-		let result = await queryDatabase(
+		let result = await queryDatabaseSingle(
 			"SELECT u.* "+
 			"FROM users u "+
 			"WHERE u.user_id = ?",
