@@ -165,39 +165,44 @@ let server = async () => {
 		res.send(result);
 	});
 
+	interface Client {
+		user_id: string,
+		res: Response
+	};
+	let channels: Record<string, Client[]> = {};
+
 	app.get("/:user_id/live", authentication, (req: Request, res: Response) => {
+		let user_id = req.params.user_id;
+
 		res.writeHead(200, {
 			"Content-Type" : "text/event-stream",
 			"Cache-Control": "no-cache",
 			"Connection"   : "keep-alive"
 		});
+		res.flushHeaders();
+		
+		let client: Client = { user_id: String(Date.now()), res };
+		channels[user_id] = channels[user_id] || [];
+		channels[user_id].push(client);
 
-		let interval = setInterval(async () => {
-			let random: {
-				date_time: string,
-				step: string,
-				temperature: string,
-				longitude: string,
-				latitude: string,
-				bpm: string,
-				blood_oxygen: string
-			} = {
-				date_time: String(new Date()),
-				step: String(Math.floor(Math.random() * (10000 - 5000 + 1)) + 5000),
-				temperature: String(Math.floor(Math.random() * (40 - 35 + 1)) + 35),
-				longitude: String(Math.floor(Math.random() * (56 - 53 + 1)) + 53),
-				latitude: String(Math.floor(Math.random() * (56 - 53 + 1)) + 53),
-				bpm: String(Math.floor(Math.random() * (100 - 50 + 1)) + 50),
-				blood_oxygen: String(Math.floor(Math.random() * (100 - 50 + 1)) + 50)
-			};
+		req.on("close", () => {
+			channels[user_id] = channels[user_id].filter(c => c.user_id !== client.user_id);
 
-			res.write(`data: ${JSON.stringify(random)}\n\n`);
-		}, 1000);
-
-		res.on("close", () => {
-			clearInterval(interval);
-			res.end();
+			if (channels[user_id].length === 0)
+				delete channels[user_id];
 		});
+	});
+
+	app.post("/:user_id/live", (req: Request, res: Response) => {
+		let user_id = req.params.user_id;
+		let payload = JSON.stringify(req.body);
+		let clients = channels[user_id] || [];
+
+		clients.forEach(c => {
+			c.res.write(`data: ${payload}\n\n`);
+		});
+
+		res.send();
 	});
 
 	let port: Number = Number(process.env.PORT) || 8082;
